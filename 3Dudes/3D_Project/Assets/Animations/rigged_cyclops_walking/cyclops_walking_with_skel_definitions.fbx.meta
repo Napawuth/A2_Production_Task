@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: efd921f94643b524cabf8f3e61706c58
+guid: e5c85cfe7e4009c4fabbdcb012dfdf15
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: MonsterCyclops_standardSurface2
-    second: {fileID: 2100000, guid: 377edd5a0f675b248b689bc62e27745f, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
