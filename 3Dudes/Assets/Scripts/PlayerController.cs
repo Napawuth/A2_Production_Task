@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleJump();
         HandleRespawn();
+        if (transform.position.y < -10f)
+        {
+            Respawn();
+        }
     }
 
     void HandleMovement()
@@ -37,12 +41,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void Respawn() {
+        transform.position = startPos;
+        rb.linearVelocity = Vector2.zero;
+    }
+
+
     void HandleRespawn()
     {
         if (Input.GetKeyDown(KeyCode.R)) // Press R to reset position
         {
-            transform.position = startPos;
-            rb.linearVelocity = Vector2.zero; // stop motion
+            Respawn();
         }
     }
 
