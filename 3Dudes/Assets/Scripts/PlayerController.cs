@@ -4,10 +4,11 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;       // Speed of horizontal movement
     public float jumpForce = 10f;      // Force applied for jumping
+    public int maxJumps = 2;
     private Rigidbody2D rb;            // Reference to Rigidbody2D
     private Vector2 startPos;          // Store start position for respawn
-
     private bool isGrounded = false;   // Check if player is on the ground
+    private int jumpCount;
 
     void Start()
     {
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleJump();
         HandleRespawn();
-        if (transform.position.y < -10f)
+        if (transform.position.y < -10f) // If player falls off the map, respawn
         {
             Respawn();
         }
@@ -34,9 +35,13 @@ public class PlayerController : MonoBehaviour
 
     void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < maxJumps)
         {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); // prevents weak double jumps 
+                                                                    // by removing downward movement when second jump activated
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+            jumpCount++;
             isGrounded = false; // prevent double jump
         }
     }
@@ -60,6 +65,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            jumpCount = 0; // Reset Jump count when you hit the groun
         }
     }
 }
