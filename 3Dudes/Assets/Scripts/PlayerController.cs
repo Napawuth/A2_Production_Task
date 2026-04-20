@@ -4,11 +4,13 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;       // Speed of horizontal movement
     public float jumpForce = 10f;      // Force applied for jumping
-    public int maxJumps = 2;
+    public int maxJumps = 2;           // Maximum Jumps allowed
+    public float jumpCooldown = 0.4f;  // time between your next jump
     private Rigidbody2D rb;            // Reference to Rigidbody2D
     private Vector2 startPos;          // Store start position for respawn
     private bool isGrounded = false;   // Check if player is on the ground
-    private int jumpCount;
+    private int jumpCount;             // How many times you Jump
+    private float lastJumpTime;
 
     void Start()
     {
@@ -35,14 +37,17 @@ public class PlayerController : MonoBehaviour
 
     void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < maxJumps)
+        if (Input.GetKeyDown(KeyCode.Space)
+            && jumpCount < maxJumps
+            && Time.time > lastJumpTime + jumpCooldown) // Uses Unity timer to calculate if the right amount of time has passed since the last jump
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); // prevents weak double jumps 
-                                                                    // by removing downward movement when second jump activated
+                                                                      // by removing downward movement when second jump activated
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
             jumpCount++;
             isGrounded = false; // prevent double jump
+            lastJumpTime = Time.time; // resets jump timer
         }
     }
 
